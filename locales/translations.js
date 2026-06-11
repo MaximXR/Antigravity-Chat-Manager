@@ -92,8 +92,9 @@ const translations = {
     "errGeneral": "Error: ",
     "warnFolderNotFound": "Chat folder is missing on disk.",
     "warnProjectFolderNotFound": "Project folder is missing on disk or not specified.",
-    "layoutDetailedTitle": "Detailed view",
-    "layoutCompactTitle": "Compact view"
+    "layoutModeLabel": "View",
+    "layoutDetailed": "Detailed",
+    "layoutCompact": "Compact"
   },
   "ru": {
     "title": "Менеджер диалогов Antigravity",
@@ -188,8 +189,9 @@ const translations = {
     "errGeneral": "Ошибка: ",
     "warnFolderNotFound": "Папка чата на диске отсутствует.",
     "warnProjectFolderNotFound": "Папка проекта на диске отсутствует или не задана.",
-    "layoutDetailedTitle": "Подробный вид",
-    "layoutCompactTitle": "Компактный вид"
+    "layoutModeLabel": "Вид",
+    "layoutDetailed": "Подробный",
+    "layoutCompact": "Компактный"
   },
   "zh-cn": {
     "title": "Antigravity 对话管理器",

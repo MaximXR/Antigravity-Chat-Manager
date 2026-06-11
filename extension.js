@@ -1253,8 +1253,9 @@ function getWebviewContent(lang) {
         cardNote: getTranslation('cardNote', lang),
         cardAddNote: getTranslation('cardAddNote', lang),
         cardCreatedTitle: getTranslation('cardCreatedTitle', lang),
-        layoutDetailedTitle: getTranslation('layoutDetailedTitle', lang),
-        layoutCompactTitle: getTranslation('layoutCompactTitle', lang)
+        layoutModeLabel: getTranslation('layoutModeLabel', lang),
+        layoutDetailed: getTranslation('layoutDetailed', lang),
+        layoutCompact: getTranslation('layoutCompact', lang)
     };
 
     const languages = [
@@ -1352,7 +1353,15 @@ function getWebviewContent(lang) {
 
         .header-actions {
             display: flex;
-            gap: 12px;
+            flex-direction: column;
+            gap: 8px;
+            align-items: flex-end;
+        }
+
+        .header-actions-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
         }
 
         /* Metrics layout */
@@ -2039,13 +2048,26 @@ function getWebviewContent(lang) {
         }
 
         /* Layout Switch Segment Control */
+        .layout-switch-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            margin-top: 4px;
+        }
+
+        .layout-switch-row > span {
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
         .layout-switch-group {
             display: inline-flex;
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid var(--border-color);
             border-radius: 6px;
             padding: 2px;
-            height: 28px;
+            height: 26px;
             box-sizing: border-box;
             gap: 2px;
             align-items: center;
@@ -2055,15 +2077,16 @@ function getWebviewContent(lang) {
             background: none;
             border: none;
             color: var(--text-muted);
-            width: 24px;
-            height: 22px;
+            padding: 0 10px;
+            height: 20px;
             border-radius: 4px;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
             justify-content: center;
+            font-size: 11px;
+            font-weight: 500;
             transition: all 0.15s ease-in-out;
-            padding: 0;
         }
         
         .layout-switch-btn:hover {
@@ -2085,33 +2108,34 @@ function getWebviewContent(lang) {
                 <h1>{{title}}</h1>
                 <p>{{subtitle}}</p>
             </div>
-            <div class="header-actions" style="display: flex; gap: 8px; align-items: center;">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--text-muted); flex-shrink: 0; margin-right: -4px;" title="Language / Язык">
-                    <path d="m5 8 6 6"/>
-                    <path d="m4 14 6-6 2-3"/>
-                    <path d="M2 5h12"/>
-                    <path d="M7 2h1"/>
-                    <path d="m22 22-5-10-5 10"/>
-                    <path d="M14 18h6"/>
-                </svg>
-                <select class="sort-select" id="language-select" style="max-width: 120px; font-size: 11px; padding: 4px 8px; height: 28px; line-height: 18px; border-radius: 6px;">
-                    ${langOptionsHtml}
-                </select>
-                <div class="layout-switch-group">
-                    <button class="layout-switch-btn" id="btn-layout-detailed" title="{{layoutDetailedTitle}}">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+            <div class="header-actions">
+                <div class="header-actions-row">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--text-muted); flex-shrink: 0; margin-right: -4px;" title="Language / Язык">
+                        <path d="m5 8 6 6"/>
+                        <path d="m4 14 6-6 2-3"/>
+                        <path d="M2 5h12"/>
+                        <path d="M7 2h1"/>
+                        <path d="m22 22-5-10-5 10"/>
+                        <path d="M14 18h6"/>
+                    </svg>
+                    <select class="sort-select" id="language-select" style="max-width: 120px; font-size: 11px; padding: 4px 8px; height: 28px; line-height: 18px; border-radius: 6px;">
+                        ${langOptionsHtml}
+                    </select>
+                    <button class="btn btn-outline" id="btn-settings" title="{{settings}}">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
                     </button>
-                    <button class="layout-switch-btn" id="btn-layout-compact" title="{{layoutCompactTitle}}">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                    <button class="btn btn-outline" id="btn-refresh">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                        {{refresh}}
                     </button>
                 </div>
-                <button class="btn btn-outline" id="btn-settings" title="{{settings}}">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-                </button>
-                <button class="btn btn-outline" id="btn-refresh">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
-                    {{refresh}}
-                </button>
+                <div class="layout-switch-row">
+                    <span>{{layoutModeLabel}}:</span>
+                    <div class="layout-switch-group">
+                        <button class="layout-switch-btn" id="btn-layout-detailed">{{layoutDetailed}}</button>
+                        <button class="layout-switch-btn" id="btn-layout-compact">{{layoutCompact}}</button>
+                    </div>
+                </div>
             </div>
         </header>
 
