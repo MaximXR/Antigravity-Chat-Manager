@@ -40,20 +40,49 @@ function activate(context) {
         vscode.window.registerWebviewViewProvider('antigravity-chat-manager.view', provider)
     );
 
+    let activePanel = undefined;
+
     // Monitor setting changes
     vscode.workspace.onDidChangeConfiguration(e => {
         if (e.affectsConfiguration('antigravity-chat-manager.iconType') || e.affectsConfiguration('antigravity-chat-manager.language')) {
             updateManifestIcon(context);
             updateStatusBarIcon(statusBarItem);
+            const activeLang = getActiveLanguage();
             if (provider && provider._view) {
-                provider._view.webview.html = getWebviewContent(getActiveLanguage());
+                provider._view.webview.html = getWebviewContent(activeLang);
+            }
+            if (activePanel) {
+                activePanel.title = getTranslation('title', activeLang) || 'Antigravity Chat Manager';
+                activePanel.webview.html = getWebviewContent(activeLang);
             }
         }
     }, null, context.subscriptions);
 
-    // Register command to focus/open the view in the bottom panel
+    // Register command to focus/open the view in the editor tab
     let disposable = vscode.commands.registerCommand('antigravity-chat-manager.open', function () {
-        vscode.commands.executeCommand('antigravity-chat-manager.view.focus');
+        if (activePanel) {
+            activePanel.reveal(vscode.ViewColumn.Active);
+        } else {
+            const activeLang = getActiveLanguage();
+            activePanel = vscode.window.createWebviewPanel(
+                'antigravityChatManager',
+                getTranslation('title', activeLang) || 'Antigravity Chat Manager',
+                vscode.ViewColumn.Active,
+                {
+                    enableScripts: true,
+                    localResourceRoots: [vscode.Uri.file(context.extensionPath)],
+                    retainContextWhenHidden: true
+                }
+            );
+
+            activePanel.webview.html = getWebviewContent(activeLang);
+
+            activePanel.onDidDispose(() => {
+                activePanel = undefined;
+            }, null, context.subscriptions);
+
+            provider.setupWebviewMessaging(activePanel.webview);
+        }
     });
 
     context.subscriptions.push(disposable);
@@ -125,10 +154,13 @@ class ChatManagerViewProvider {
         const activeLang = getActiveLanguage();
         webviewView.webview.html = getWebviewContent(activeLang);
 
-        // Message listener (from Webview to extension host)
-        webviewView.webview.onDidReceiveMessage(
+        this.setupWebviewMessaging(webviewView.webview);
+    }
+
+    setupWebviewMessaging(webview) {
+        const lang = getActiveLanguage();
+        webview.onDidReceiveMessage(
             message => {
-                const lang = getActiveLanguage();
                 const webviewId = message.webviewId || '';
                 logDebug(`resolveWebviewView: received message command="${message.command}" with webviewId="${webviewId}"`);
                 switch (message.command) {
@@ -145,7 +177,7 @@ class ChatManagerViewProvider {
                             this.runBackend(args, (success, data) => {
                                 logDebug(`resolveWebviewView: runBackend returned success=${success}, data length=${data ? data.length : 0}`);
                                 if (success) {
-                                    webviewView.webview.postMessage({ command: 'listData', data: JSON.parse(data) });
+                                    webview.postMessage({ command: 'listData', data: JSON.parse(data) });
                                 } else {
                                     vscode.window.showErrorMessage(getTranslation('errList', lang) + data);
                                 }
@@ -154,7 +186,7 @@ class ChatManagerViewProvider {
                             logDebug(`resolveWebviewView: getCurrentChatTitle failed with ${err ? err.message : 'unknown'}`);
                             this.runBackend(['list'], (success, data) => {
                                 if (success) {
-                                    webviewView.webview.postMessage({ command: 'listData', data: JSON.parse(data) });
+                                    webview.postMessage({ command: 'listData', data: JSON.parse(data) });
                                 } else {
                                     vscode.window.showErrorMessage(getTranslation('errList', lang) + data);
                                 }
@@ -172,8 +204,7 @@ class ChatManagerViewProvider {
                                     const res = JSON.parse(data);
                                     if (res.success) {
                                         vscode.window.showInformationMessage(getTranslation('infoDeleted', lang).replace('{uuid}', message.uuid.substring(0, 8)).replace('{freed}', res.freed_str));
-                                        // Trigger refresh
-                                        webviewView.webview.postMessage({ command: 'actionSuccess', message: 'deleted' });
+                                        webview.postMessage({ command: 'actionSuccess', message: 'deleted' });
                                     } else {
                                         vscode.window.showErrorMessage(getTranslation('errDelete', lang) + res.error);
                                     }
@@ -193,8 +224,7 @@ class ChatManagerViewProvider {
                                 const res = JSON.parse(data);
                                 if (res.success) {
                                     vscode.window.showInformationMessage(getTranslation('infoRestored', lang).replace('{title}', res.title));
-                                    // Trigger refresh
-                                    webviewView.webview.postMessage({ command: 'actionSuccess', message: 'restored' });
+                                    webview.postMessage({ command: 'actionSuccess', message: 'restored' });
                                 } else {
                                     vscode.window.showErrorMessage(getTranslation('errRestore', lang) + res.error);
                                 }
@@ -209,7 +239,7 @@ class ChatManagerViewProvider {
                                 const res = JSON.parse(data);
                                 if (res.success) {
                                     vscode.window.showInformationMessage(getTranslation('infoRestoredCount', lang).replace('{count}', res.restored_count));
-                                    webviewView.webview.postMessage({ command: 'actionSuccess', message: 'restored_all' });
+                                    webview.postMessage({ command: 'actionSuccess', message: 'restored_all' });
                                 } else {
                                     vscode.window.showErrorMessage(getTranslation('errRestore', lang) + (res.errors ? res.errors.join('; ') : getTranslation('cardUnknown', lang)));
                                 }
@@ -229,7 +259,7 @@ class ChatManagerViewProvider {
                                     const res = JSON.parse(data);
                                     if (res.success) {
                                         vscode.window.showInformationMessage(getTranslation('infoDeletedCount', lang).replace('{count}', res.deleted_count).replace('{freed}', res.freed_str));
-                                        webviewView.webview.postMessage({ command: 'actionSuccess', message: 'deleted_all' });
+                                        webview.postMessage({ command: 'actionSuccess', message: 'deleted_all' });
                                     } else {
                                         vscode.window.showErrorMessage(getTranslation('errDelete', lang) + (res.errors ? res.errors.join('; ') : getTranslation('cardUnknown', lang)));
                                     }
@@ -256,14 +286,14 @@ class ChatManagerViewProvider {
                             if (success) {
                                 const res = JSON.parse(data);
                                 if (res.success) {
-                                    webviewView.webview.postMessage({ command: 'actionSuccess', message: 'note_saved' });
+                                    webview.postMessage({ command: 'noteSaved', uuid: message.uuid, note: message.note });
                                 } else {
                                     vscode.window.showErrorMessage(getTranslation('errSaveNote', lang) + res.error);
-                                    webviewView.webview.postMessage({ command: 'actionSuccess', message: 'note_failed' });
+                                    webview.postMessage({ command: 'actionSuccess', message: 'note_failed' });
                                 }
                             } else {
                                 vscode.window.showErrorMessage(getTranslation('errBackend', lang) + data);
-                                webviewView.webview.postMessage({ command: 'actionSuccess', message: 'note_failed' });
+                                webview.postMessage({ command: 'actionSuccess', message: 'note_failed' });
                             }
                         });
                         break;
@@ -2027,15 +2057,7 @@ function getWebviewContent(lang) {
         .chat-list.compact .chat-workspace-row:has(.unknown) {
             display: none !important;
         }
-        .chat-list.compact .chat-actions {
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.2s ease-in-out;
-        }
-        .chat-list.compact .chat-card:hover .chat-actions {
-            opacity: 1;
-            pointer-events: auto;
-        }
+        /* Do not hide buttons in compact mode */
         .chat-list.compact .chat-title {
             font-size: 13px;
         }
@@ -2441,6 +2463,13 @@ function getWebviewContent(lang) {
                 case 'actionSuccess':
                     sendToExtension({ command: 'list' });
                     break;
+                case 'noteSaved':
+                    const chat = conversations.find(c => c.uuid === message.uuid);
+                    if (chat) {
+                        chat.note = message.note;
+                    }
+                    renderList();
+                    break;
             }
         });
 
@@ -2781,7 +2810,11 @@ function getWebviewContent(lang) {
                         if (save) {
                             const newVal = input.value.trim();
                             if (newVal !== currentVal) {
-                                showLoading();
+                                const chat = conversations.find(c => c.uuid === uuid);
+                                if (chat) {
+                                    chat.note = newVal;
+                                }
+                                renderList();
                                 sendToExtension({ command: 'saveNote', uuid: uuid, note: newVal });
                             } else {
                                 renderList();
