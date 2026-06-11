@@ -1,0 +1,9 @@
+{
+  "extension.displayName": "Antigravity Chat Manager (RU)",
+  "extension.description": "Визуальный инструмент для управления и очистки логов диалогов Antigravity",
+  "command.open": "Управление диалогами",
+  "viewsContainers.activitybar.title": "🧹 Диалоги",
+  "views.chat-manager.name": "Менеджер диалогов",
+  "config.iconType.description": "Тип иконки для боковой панели (chat - облако диалога, trash - корзина)",
+  "config.language.description": "Язык интерфейса и уведомлений для Менеджера чатов Antigravity (auto: язык системы, либо выбрать вручную)"
+}

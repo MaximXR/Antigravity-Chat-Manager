@@ -1,0 +1,6 @@
+node_modules/
+extension_debug.log
+*.vsix
+__pycache__/
+*.pyc
+.DS_Store

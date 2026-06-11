@@ -1,0 +1,9 @@
+{
+  "extension.displayName": "Antigravity Chat Manager",
+  "extension.description": "Visual tool to manage and cleanup Antigravity dialogues from disk and index",
+  "command.open": "Manage Chats / Dialogues",
+  "viewsContainers.activitybar.title": "🧹 Dialogues",
+  "views.chat-manager.name": "Dialogues Manager",
+  "config.iconType.description": "Type of icon to use for the sidebar panel (chat or trash)",
+  "config.language.description": "Interface and notification language for Antigravity Chat Manager (auto: system language, or choose manual)"
+}

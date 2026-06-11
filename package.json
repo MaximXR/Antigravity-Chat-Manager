@@ -1,0 +1,115 @@
+{
+  "name": "antigravity-chat-manager",
+  "displayName": "%extension.displayName%",
+  "description": "%extension.description%",
+  "version": "1.0.0",
+  "publisher": "antigravity-community",
+  "icon": "resources/icon.png",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "*"
+  ],
+  "main": "./extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "antigravity-chat-manager.open",
+        "title": "%command.open%",
+        "category": "Antigravity"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "antigravity-chat-manager-container",
+          "title": "%viewsContainers.activitybar.title%",
+          "icon": "$(trash)"
+        }
+      ]
+    },
+    "views": {
+      "antigravity-chat-manager-container": [
+        {
+          "type": "webview",
+          "id": "antigravity-chat-manager.view",
+          "name": "%views.chat-manager.name%"
+        }
+      ]
+    },
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "antigravity-chat-manager.open",
+          "when": "true"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Antigravity Chat Manager",
+      "properties": {
+        "antigravity-chat-manager.iconType": {
+          "type": "string",
+          "enum": [
+            "chat",
+            "trash"
+          ],
+          "default": "chat",
+          "description": "%config.iconType.description%"
+        },
+        "antigravity-chat-manager.language": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "en",
+            "ru",
+            "zh-cn",
+            "zh-tw",
+            "ja",
+            "ko",
+            "de",
+            "fr",
+            "es",
+            "pt-br",
+            "it",
+            "tr",
+            "pl",
+            "cs",
+            "vi",
+            "ar",
+            "id"
+          ],
+          "default": "auto",
+          "description": "%config.language.description%",
+          "enumItemLabels": {
+            "auto": "Default (Auto)",
+            "en": "English",
+            "ru": "Русский",
+            "zh-cn": "简体中文",
+            "zh-tw": "繁體中文",
+            "ja": "日本語",
+            "ko": "한국어",
+            "de": "Deutsch",
+            "fr": "Français",
+            "es": "Español",
+            "pt-br": "Português (Brasil)",
+            "it": "Italiano",
+            "tr": "Türkçe",
+            "pl": "Polski",
+            "cs": "Čeština",
+            "vi": "Tiếng Việt",
+            "ar": "العربية",
+            "id": "Bahasa Indonesia"
+          }
+        }
+      }
+    }
+  },
+  "dependencies": {
+    "ws": "^8.21.0"
+  }
+}
