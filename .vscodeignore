@@ -1,0 +1,9 @@
+.git/**
+.gitignore
+.vscodeignore
+drafts/**
+temp_resources/**
+generate_icons.py
+merge_logos.py
+*.lock_test
+*.vsix
