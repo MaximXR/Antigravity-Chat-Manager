@@ -52,7 +52,7 @@
 ![Подробный вид](resources/screenshot_detailed.png)
 
 #### Компактный вид (Compact View)
-![Компактный вид](resources/screenshot_compact.png)
+![Компактный вид](resources/screenshot_compact_ru.png)
 
 ### Системные требования
 - Установленный интерпретатор Python 3 (`python` или `python3` в PATH) для работы фоновой службы.
@@ -107,7 +107,7 @@ This ensures that:
 ![Detailed View](resources/screenshot_detailed.png)
 
 #### Compact View
-![Compact View](resources/screenshot_compact.png)
+![Compact View](resources/screenshot_compact_en.png)
 
 ### Prerequisites
 - Python 3 interpreter (`python` or `python3` in PATH) is required to run the backend service.
