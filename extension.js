@@ -2794,13 +2794,52 @@ function getWebviewContent(lang) {
                     const currentVal = row.getAttribute('data-note') || '';
                     const textSpan = row.querySelector('.note-text');
                     
+                    const container = document.createElement('div');
+                    container.className = 'note-edit-container';
+                    container.style.display = 'inline-flex';
+                    container.style.alignItems = 'center';
+                    container.style.position = 'relative';
+                    container.style.width = '250px';
+
                     const input = document.createElement('input');
                     input.type = 'text';
                     input.className = 'note-inline-input';
                     input.value = currentVal;
                     input.placeholder = t.cardAddNote;
+                    input.style.width = '100%';
+                    input.style.paddingRight = '20px';
+                    input.style.boxSizing = 'border-box';
                     
-                    textSpan.replaceWith(input);
+                    const clearBtn = document.createElement('span');
+                    clearBtn.innerHTML = '✖';
+                    clearBtn.style.position = 'absolute';
+                    clearBtn.style.right = '6px';
+                    clearBtn.style.top = '50%';
+                    clearBtn.style.transform = 'translateY(-50%)';
+                    clearBtn.style.cursor = 'pointer';
+                    clearBtn.style.color = 'var(--text-muted)';
+                    clearBtn.style.fontSize = '10px';
+                    clearBtn.style.lineHeight = '1';
+                    clearBtn.style.display = currentVal ? 'block' : 'none';
+                    clearBtn.title = t.cancel || 'Clear';
+
+                    // Update clear button visibility on input
+                    input.addEventListener('input', () => {
+                        clearBtn.style.display = input.value ? 'block' : 'none';
+                    });
+
+                    clearBtn.addEventListener('mousedown', (e) => {
+                        // Prevent losing focus on input before click is registered
+                        e.preventDefault();
+                        input.value = '';
+                        clearBtn.style.display = 'none';
+                        input.focus();
+                    });
+
+                    container.appendChild(input);
+                    container.appendChild(clearBtn);
+
+                    textSpan.replaceWith(container);
                     input.focus();
                     
                     let finished = false;
