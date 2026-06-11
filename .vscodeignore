@@ -7,3 +7,4 @@ generate_icons.py
 merge_logos.py
 *.lock_test
 *.vsix
+dist/**
