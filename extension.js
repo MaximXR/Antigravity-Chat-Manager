@@ -2,7 +2,7 @@ const vscode = require('vscode');
 const cp = require('child_process');
 const path = require('path');
 const fs = require('fs');
-const { getTranslation } = require('./translations');
+const { getTranslation } = require('./locales/translations');
 
 function getActiveLanguage() {
     const configLang = vscode.workspace.getConfiguration('antigravity-chat-manager').get('language', 'auto');
