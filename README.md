@@ -46,6 +46,14 @@
 - **Кроссплатформенность**: Работает на Windows, macOS и Linux.
 - **Двуязычный интерфейс**: Автоматически переключается на русский или английский язык в зависимости от системной локали IDE.
 
+### Скриншоты / Screenshots
+
+#### Подробный вид (Detailed View)
+![Подробный вид](resources/screenshot_detailed.png)
+
+#### Компактный вид (Compact View)
+![Компактный вид](resources/screenshot_compact.png)
+
 ### Системные требования
 - Установленный интерпретатор Python 3 (`python` или `python3` в PATH) для работы фоновой службы.
 
@@ -92,6 +100,14 @@ This ensures that:
 - **IDE Integration**: Quick settings button (gear icon ⚙️) and window reload button to instantly apply changes in the left history panel.
 - **Cross-Platform**: Fully compatible with Windows, macOS, and Linux.
 - **Localization**: Automatically switches between English and Russian based on your IDE locale settings.
+
+### Screenshots
+
+#### Detailed View
+![Detailed View](resources/screenshot_detailed.png)
+
+#### Compact View
+![Compact View](resources/screenshot_compact.png)
 
 ### Prerequisites
 - Python 3 interpreter (`python` or `python3` in PATH) is required to run the backend service.

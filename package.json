@@ -4,6 +4,10 @@
   "description": "%extension.description%",
   "version": "1.0.0",
   "publisher": "antigravity-community",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MaximXR/Antigravity-Chat-Manager.git"
+  },
   "icon": "resources/icon.png",
   "engines": {
     "vscode": "^1.90.0"
