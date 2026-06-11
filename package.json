@@ -28,7 +28,7 @@
         {
           "id": "antigravity-chat-manager-container",
           "title": "%viewsContainers.activitybar.title%",
-          "icon": "$(trash)"
+          "icon": "$(comment-discussion)"
         }
       ]
     },

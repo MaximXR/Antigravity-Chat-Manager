@@ -91,7 +91,9 @@ const translations = {
     "errCdpConnect": "Failed to connect to CDP: ",
     "errGeneral": "Error: ",
     "warnFolderNotFound": "Chat folder is missing on disk.",
-    "warnProjectFolderNotFound": "Project folder is missing on disk or not specified."
+    "warnProjectFolderNotFound": "Project folder is missing on disk or not specified.",
+    "layoutDetailedTitle": "Detailed view",
+    "layoutCompactTitle": "Compact view"
   },
   "ru": {
     "title": "Менеджер диалогов Antigravity",
@@ -185,7 +187,9 @@ const translations = {
     "errCdpConnect": "Не удалось подключиться к CDP: ",
     "errGeneral": "Ошибка: ",
     "warnFolderNotFound": "Папка чата на диске отсутствует.",
-    "warnProjectFolderNotFound": "Папка проекта на диске отсутствует или не задана."
+    "warnProjectFolderNotFound": "Папка проекта на диске отсутствует или не задана.",
+    "layoutDetailedTitle": "Подробный вид",
+    "layoutCompactTitle": "Компактный вид"
   },
   "zh-cn": {
     "title": "Antigravity 对话管理器",
