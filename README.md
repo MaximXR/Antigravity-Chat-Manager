@@ -8,6 +8,12 @@
 
 **Antigravity Chat Manager** — это расширение для Antigravity IDE, предоставляющее удобный визуальный интерфейс для управления диалогами (чатами) искусственного интеллекта на локальном диске и в индексе среды разработки.
 
+### Установка и скачивание
+Готовый пакет расширения `.vsix` можно скачать со страницы релизов:
+👉 **[Последние релизы (VSIX)](https://github.com/MaximXR/Antigravity-Chat-Manager/releases)**
+
+После скачивания файла установите его в Antigravity IDE (меню *Extensions* -> кнопка *... (Views and More Actions)* -> *Install from VSIX...*).
+
 ### Какие проблемы решает расширение?
 
 1. **Потеря диалогов (выпадение из индекса)**:
@@ -62,6 +68,12 @@
 ## English
 
 **Antigravity Chat Manager** is an extension for Antigravity IDE that provides a convenient visual interface to manage AI dialogues (chats) on your local disk and in the development environment index.
+
+### Installation & Download
+You can download the compiled `.vsix` extension file from the GitHub releases page:
+👉 **[Download Latest Releases (VSIX)](https://github.com/MaximXR/Antigravity-Chat-Manager/releases)**
+
+After downloading, install it in Antigravity IDE (via *Extensions* menu -> click *... (Views and More Actions)* -> *Install from VSIX...*).
 
 ### What Problems Does It Solve?
 

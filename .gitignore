@@ -4,3 +4,7 @@ extension_debug.log
 __pycache__/
 *.pyc
 .DS_Store
+
+# User custom drafts/assets directories
+drafts/
+temp_resources/
