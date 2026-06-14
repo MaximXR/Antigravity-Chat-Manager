@@ -233,6 +233,72 @@ class ChatManagerViewProvider {
                             }
                         });
                         break;
+                    case 'showAlert':
+                        vscode.window.showWarningMessage(message.text);
+                        break;
+                    case 'confirmRestoreAll': {
+                        const msg = (getTranslation('confirmRestoreAll', lang) || '') + message.count + (getTranslation('confirmRestoreAllSuffix', lang) || '');
+                        const btnText = getTranslation('restoreAll', lang) || 'Restore';
+                        vscode.window.showWarningMessage(msg, { modal: true }, btnText).then(selection => {
+                            if (selection === btnText) {
+                                webview.postMessage({ command: 'showLoading' });
+                                this.runBackend(['restore_all_orphaned'], (success, data) => {
+                                    if (success) {
+                                        const res = JSON.parse(data);
+                                        if (res.success) {
+                                            vscode.window.showInformationMessage(getTranslation('infoRestoredCount', lang).replace('{count}', res.restored_count));
+                                            webview.postMessage({ command: 'actionSuccess', message: 'restored_all' });
+                                        } else {
+                                            vscode.window.showErrorMessage(getTranslation('errRestore', lang) + (res.errors ? res.errors.join('; ') : getTranslation('cardUnknown', lang)));
+                                            webview.postMessage({ command: 'actionSuccess', message: 'restore_failed' });
+                                        }
+                                    } else {
+                                        vscode.window.showErrorMessage(getTranslation('errBackend', lang) + data);
+                                        webview.postMessage({ command: 'actionSuccess', message: 'restore_failed' });
+                                    }
+                                });
+                            }
+                        });
+                        break;
+                    }
+                    case 'confirmDeleteAll': {
+                        let msg = (getTranslation('confirmDeleteAll', lang) || '') + message.count + (getTranslation('confirmDeleteAllSuffix', lang) || '');
+                        msg = msg.replace(/\\n/g, '\n');
+                        const btnText = getTranslation('deleteForever', lang) || 'Delete Permanently';
+                        vscode.window.showWarningMessage(msg, { modal: true }, btnText).then(selection => {
+                            if (selection === btnText) {
+                                webview.postMessage({ command: 'showLoading' });
+                                const runDeleteAll = (currentTitle) => {
+                                    const args = ['delete_all_orphaned'];
+                                    if (currentTitle) {
+                                        args.push(currentTitle);
+                                    }
+                                    this.runBackend(args, (success, data) => {
+                                        if (success) {
+                                            const res = JSON.parse(data);
+                                            if (res.success || (res.deleted_count && res.deleted_count > 0)) {
+                                                vscode.window.showInformationMessage(getTranslation('infoDeletedCount', lang).replace('{count}', res.deleted_count).replace('{freed}', res.freed_str));
+                                                if (res.errors && res.errors.length > 0) {
+                                                    vscode.window.showWarningMessage(getTranslation('warnSkippedLocked', lang) + " " + res.errors.join('; '));
+                                                }
+                                                webview.postMessage({ command: 'actionSuccess', message: 'deleted_all' });
+                                            } else {
+                                                vscode.window.showErrorMessage(getTranslation('errDelete', lang) + (res.errors ? res.errors.join('; ') : getTranslation('cardUnknown', lang)));
+                                                webview.postMessage({ command: 'actionSuccess', message: 'delete_failed' });
+                                            }
+                                        } else {
+                                            vscode.window.showErrorMessage(getTranslation('errBackend', lang) + data);
+                                            webview.postMessage({ command: 'actionSuccess', message: 'delete_failed' });
+                                        }
+                                    });
+                                };
+                                this.getCurrentChatTitle(webviewId)
+                                    .then(runDeleteAll)
+                                    .catch(() => runDeleteAll(null));
+                            }
+                        });
+                        break;
+                    }
                     case 'restoreAllOrphaned':
                         this.runBackend(['restore_all_orphaned'], (success, data) => {
                             if (success) {
@@ -2186,6 +2252,24 @@ function getWebviewContent(lang) {
             background: rgba(59, 130, 246, 0.15);
             color: #60a5fa;
         }
+
+        @media (max-width: 380px) {
+            .chat-card {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            .chat-actions {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 6px;
+                width: 100%;
+            }
+            .chat-actions .btn {
+                width: 100%;
+                justify-content: center;
+                box-sizing: border-box;
+            }
+        }
     </style>
 </head>
 <body>
@@ -2444,25 +2528,19 @@ function getWebviewContent(lang) {
         document.getElementById('btn-restore-all').addEventListener('click', () => {
             const count = conversations.filter(c => !c.isActive).length;
             if (count === 0) {
-                alert(t.alertNoRestore);
+                sendToExtension({ command: 'showAlert', text: t.alertNoRestore });
                 return;
             }
-            if (confirm(t.confirmRestoreAll + count + t.confirmRestoreAllSuffix)) {
-                showLoading();
-                sendToExtension({ command: 'restoreAllOrphaned' });
-            }
+            sendToExtension({ command: 'confirmRestoreAll', count: count });
         });
 
         document.getElementById('btn-delete-all').addEventListener('click', () => {
             const count = conversations.filter(c => !c.isActive).length;
             if (count === 0) {
-                alert(t.alertNoDelete);
+                sendToExtension({ command: 'showAlert', text: t.alertNoDelete });
                 return;
             }
-            if (confirm(t.confirmDeleteAll + count + t.confirmDeleteAllSuffix)) {
-                showLoading();
-                sendToExtension({ command: 'deleteAllOrphaned' });
-            }
+            sendToExtension({ command: 'confirmDeleteAll', count: count });
         });
 
         searchInput.addEventListener('input', (e) => {
@@ -2541,6 +2619,9 @@ function getWebviewContent(lang) {
                         chat.note = message.note;
                     }
                     renderList();
+                    break;
+                case 'showLoading':
+                    showLoading();
                     break;
             }
         });
