@@ -28,16 +28,6 @@
    - **Пользовательских заметок (аннотаций)** для каждого диалога.
    - Специального фильтра **«С заметками»**, позволяющего быстро находить чаты, в которые вы добавили важные текстовые комментарии.
 
-> [!NOTE]
-> **Где хранятся заметки?**
-> Заметки хранятся локально на вашем компьютере в глобальной папке `~/.gemini/antigravity-ide/annotations/<uuid>_note.txt`. Это предотвращает засорение рабочей области проекта служебными файлами и позволяет автоматически удалять файлы заметок с диска при физическом удалении диалогов.
-
-> [!IMPORTANT]
-> **Важное ограничение блокировки файлов IDE:**
-> Если диалог открывался или редактировался в текущей сессии IDE, его файлы блокируются самой средой разработки. 
-> - Перед физическим удалением такого чата (кнопкой «Удалить») необходимо выполнить **перезапуск окна Antigravity IDE (Reload Window / Ctrl+R)**, чтобы снять блокировку с файлов на диске.
-> - Аналогично, если вы восстановили потерянный чат в индекс, рекомендуется сделать **перезапуск окна (Reload Window)** перед его открытием для правильной инициализации IDE.
-
 ### Основные возможности
 - **Мониторинг диска**: Отображает размер файлов диалога, количество связанных файлов на диске и точное время создания.
 - **Детекция мусора (Осиротевших диалогов)**: Показывает, какие диалоги находятся в индексе (активные), а какие были удалены из индекса (но остались на диске как мусор).
@@ -59,6 +49,16 @@
 - **Интеграция с IDE**: Кнопка быстрого открытия настроек (шестерёнка ⚙️) и кнопка перезагрузки окна для мгновенного применения изменений истории в левой панели.
 - **Кроссплатформенность**: Работает на Windows, macOS и Linux.
 - **Двуязычный интерфейс**: Автоматически переключается на русский или английский язык в зависимости от системной локали IDE.
+
+> [!NOTE]
+> **Где хранятся заметки?**
+> Заметки хранятся локально на вашем компьютере в глобальной папке `~/.gemini/antigravity-ide/annotations/<uuid>_note.txt`. Это предотвращает засорение рабочей области проекта служебными файлами и позволяет автоматически удалять файлы заметок с диска при физическом удалении диалогов.
+
+> [!IMPORTANT]
+> **Важное ограничение блокировки файлов IDE:**
+> Если диалог открывался или редактировался в текущей сессии IDE, его файлы блокируются самой средой разработки. 
+> - Перед физическим удалением такого чата (кнопкой «Удалить») необходимо выполнить **перезапуск окна Antigravity IDE (Reload Window / Ctrl+R)**, чтобы снять блокировку с файлов на диске.
+> - Аналогично, если вы восстановили потерянный чат в индекс, рекомендуется сделать **перезапуск окна (Reload Window)** перед его открытием для правильной инициализации IDE.
 
 ### Скриншоты / Screenshots
 
@@ -109,16 +109,6 @@ After downloading, install it in Antigravity IDE (via *Extensions* menu -> click
    - **Custom annotations (notes)** for every dialogue.
    - **"With Notes"** filter to instantly find chats where you added custom text comments.
 
-> [!NOTE]
-> **Where Are the Notes Stored?**
-> Notes are saved locally on your computer in the global folder `~/.gemini/antigravity-ide/annotations/<uuid>_note.txt`. This keeps your project workspace files completely clean and ensures that note files are automatically deleted when the dialogue is erased.
-
-> [!IMPORTANT]
-> **Important IDE File Lock Limitation:**
-> If a dialogue was opened or edited in your current IDE session, its files are locked by the IDE application.
-> - Before permanently deleting such a chat (via the "Delete" button), you must perform a **Reload Window (Ctrl+R)** in Antigravity IDE to release the locks on the disk files.
-> - Similarly, if you have just restored an orphaned dialogue back to the history list, we recommend performing a **Reload Window** before opening it to ensure correct initialization.
-
 ### Key Features
 - **Disk Monitoring**: Displays dialogue file size, the number of associated files on disk, and precise creation timestamps.
 - **Orphan / Trash Detection**: Identifies which dialogues are indexed (active) and which have been unindexed (orphaned files remaining on disk).
@@ -140,6 +130,16 @@ After downloading, install it in Antigravity IDE (via *Extensions* menu -> click
 - **IDE Integration**: Quick settings button (gear icon ⚙️) and window reload button to instantly apply changes in the left history panel.
 - **Cross-Platform**: Fully compatible with Windows, macOS, and Linux.
 - **Localization**: Automatically switches between English and Russian based on your IDE locale settings.
+
+> [!NOTE]
+> **Where Are the Notes Stored?**
+> Notes are saved locally on your computer in the global folder `~/.gemini/antigravity-ide/annotations/<uuid>_note.txt`. This keeps your project workspace files completely clean and ensures that note files are automatically deleted when the dialogue is erased.
+
+> [!IMPORTANT]
+> **Important IDE File Lock Limitation:**
+> If a dialogue was opened or edited in your current IDE session, its files are locked by the IDE application.
+> - Before permanently deleting such a chat (via the "Delete" button), you must perform a **Reload Window (Ctrl+R)** in Antigravity IDE to release the locks on the disk files.
+> - Similarly, if you have just restored an orphaned dialogue back to the history list, we recommend performing a **Reload Window** before opening it to ensure correct initialization.
 
 ### Screenshots
 
