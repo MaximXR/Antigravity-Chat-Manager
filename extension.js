@@ -1673,7 +1673,7 @@ function getWebviewContent(lang) {
             padding: 14px;
             display: grid;
             grid-template-columns: 1fr auto;
-            align-items: center;
+            align-items: start;
             gap: 16px;
             transition: border-color 0.2s;
             box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.1);
@@ -1833,20 +1833,27 @@ function getWebviewContent(lang) {
             box-sizing: border-box;
         }
 
-        .chat-actions-container {
+        .chat-actions-wrapper {
             display: flex;
             flex-direction: column;
-            gap: 8px;
             align-items: flex-end;
             justify-content: flex-start;
+            gap: 10px;
             flex-shrink: 0;
-            margin-top: 4px;
         }
 
-        .chat-actions-top, .chat-actions-bottom {
+        .chat-badge-row {
             display: flex;
+            justify-content: flex-end;
+        }
+
+        .chat-actions {
+            display: flex;
+            flex-direction: row;
             gap: 6px;
             justify-content: flex-end;
+            align-items: center;
+            flex-shrink: 0;
         }
 
         /* Buttons */
@@ -2264,7 +2271,33 @@ function getWebviewContent(lang) {
             color: #60a5fa;
         }
 
-
+        @media (max-width: 380px) {
+            .chat-actions {
+                display: grid;
+                grid-template-areas: 
+                    ". note"
+                    "search folder"
+                    "launch delete";
+                grid-gap: 6px;
+                justify-content: end;
+                justify-items: end;
+            }
+            .btn-action-note {
+                grid-area: note;
+            }
+            .btn-open-search {
+                grid-area: search;
+            }
+            .btn-open-folder {
+                grid-area: folder;
+            }
+            .btn-launch, .btn-restore {
+                grid-area: launch;
+            }
+            .btn-delete {
+                grid-area: delete;
+            }
+        }
     </style>
 </head>
 <body>
@@ -2773,33 +2806,33 @@ function getWebviewContent(lang) {
 
                 const dateStr = chat.created_at_str ? chat.created_at_str : t.cardUnknown;
 
-                let topActionsHtml = '<button class="btn btn-outline btn-icon-only btn-open-search" data-uuid="' + chat.uuid + '" title="' + t.cardSearchUuidTitle + '">' +
+                let actionsHtml = '';
+                // 1. Search button
+                actionsHtml += '<button class="btn btn-outline btn-icon-only btn-open-search" data-uuid="' + chat.uuid + '" title="' + t.cardSearchUuidTitle + '">' +
                     '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>' +
-                '</button>' +
-                '<button class="btn btn-outline btn-icon-only btn-action-note" data-uuid="' + chat.uuid + '" title="' + t.cardEditNote + '">' +
+                '</button>';
+                // 2. Edit note button
+                actionsHtml += '<button class="btn btn-outline btn-icon-only btn-action-note" data-uuid="' + chat.uuid + '" title="' + t.cardEditNote + '">' +
                     '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>' +
-                '</button>' +
-                '<button class="btn btn-outline btn-icon-only btn-open-folder" data-uuid="' + chat.uuid + '" title="' + t.cardOpenFolder + '">' +
+                '</button>';
+                // 3. Open folder button
+                actionsHtml += '<button class="btn btn-outline btn-icon-only btn-open-folder" data-uuid="' + chat.uuid + '" title="' + t.cardOpenFolder + '">' +
                     '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>' +
                 '</button>';
                 
-                let bottomActionsHtml = '';
                 if (!chat.isCurrent) {
                     if (chat.isActive) {
-                        bottomActionsHtml += '<button class="btn btn-outline btn-icon-only btn-launch" data-uuid="' + chat.uuid + '" data-title="' + (chat.title || '').replace(/"/g, '&quot;') + '" title="' + t.cardOpenInIde + '">' +
+                        actionsHtml += '<button class="btn btn-outline btn-icon-only btn-launch" data-uuid="' + chat.uuid + '" data-title="' + (chat.title || '').replace(/"/g, '&quot;') + '" title="' + t.cardOpenInIde + '">' +
                             '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>' +
                         '</button>';
-                        bottomActionsHtml += '<button class="btn btn-danger btn-icon-only btn-delete" data-uuid="' + chat.uuid + '" data-title="' + (chat.title || '').replace(/"/g, '&quot;') + '" title="' + t.cardDeleteForever + '">' +
-                            '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>' +
-                        '</button>';
                     } else {
-                        bottomActionsHtml += '<button class="btn btn-success btn-icon-only btn-restore" data-uuid="' + chat.uuid + '" data-title="' + (chat.title || '').replace(/"/g, '&quot;') + '" title="' + t.cardRestoreToIde + '">' +
+                        actionsHtml += '<button class="btn btn-success btn-icon-only btn-restore" data-uuid="' + chat.uuid + '" data-title="' + (chat.title || '').replace(/"/g, '&quot;') + '" title="' + t.cardRestoreToIde + '">' +
                             '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>' +
-                        '</button>' +
-                        '<button class="btn btn-danger btn-icon-only btn-delete" data-uuid="' + chat.uuid + '" data-title="' + (chat.title || '').replace(/"/g, '&quot;') + '" title="' + t.cardDeleteForever + '">' +
-                            '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>' +
                         '</button>';
                     }
+                    actionsHtml += '<button class="btn btn-danger btn-icon-only btn-delete" data-uuid="' + chat.uuid + '" data-title="' + (chat.title || '').replace(/"/g, '&quot;') + '" title="' + t.cardDeleteForever + '">' +
+                        '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>' +
+                    '</button>';
                 }
 
                 let workspaceHtml = '';
@@ -2849,7 +2882,6 @@ function getWebviewContent(lang) {
                                 '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>' +
                             '</button>' +
                         '</div>' +
-                        badgeHtml +
                     '</div>' +
                     '<div class="chat-uuid-row">' +
                         '<span class="btn-copy" data-text="' + chat.uuid + '" data-label="UUID" title="' + t.cardCopyUuidTitle + '">UUID: ' + chat.uuid + '</span>' +
@@ -2875,9 +2907,9 @@ function getWebviewContent(lang) {
                         '</div>' +
                     '</div>' +
                 '</div>' +
-                '<div class="chat-actions-container">' +
-                    '<div class="chat-actions-top">' + topActionsHtml + '</div>' +
-                    (bottomActionsHtml ? '<div class="chat-actions-bottom">' + bottomActionsHtml + '</div>' : '') +
+                '<div class="chat-actions-wrapper">' +
+                    '<div class="chat-badge-row">' + badgeHtml + '</div>' +
+                    '<div class="chat-actions">' + actionsHtml + '</div>' +
                 '</div>';
 
                 chatListView.appendChild(card);
