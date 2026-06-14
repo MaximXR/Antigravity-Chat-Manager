@@ -2271,7 +2271,7 @@ function getWebviewContent(lang) {
             color: #60a5fa;
         }
 
-        @media (max-width: 480px) {
+        @media (max-width: 650px) {
             .chat-actions {
                 display: grid;
                 grid-template-areas: 
