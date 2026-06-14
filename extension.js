@@ -257,8 +257,11 @@ class ChatManagerViewProvider {
                             this.runBackend(args, (success, data) => {
                                 if (success) {
                                     const res = JSON.parse(data);
-                                    if (res.success) {
+                                    if (res.success || (res.deleted_count && res.deleted_count > 0)) {
                                         vscode.window.showInformationMessage(getTranslation('infoDeletedCount', lang).replace('{count}', res.deleted_count).replace('{freed}', res.freed_str));
+                                        if (res.errors && res.errors.length > 0) {
+                                            vscode.window.showWarningMessage(getTranslation('warnSkippedLocked', lang) + " " + res.errors.join('; '));
+                                        }
                                         webview.postMessage({ command: 'actionSuccess', message: 'deleted_all' });
                                     } else {
                                         vscode.window.showErrorMessage(getTranslation('errDelete', lang) + (res.errors ? res.errors.join('; ') : getTranslation('cardUnknown', lang)));
@@ -414,6 +417,40 @@ class ChatManagerViewProvider {
     }
     const ports = [...new Set([...detectedPorts, 9223, 9222, 9333, 9444, 9555, 9666])];
     logDebug(`discoverCdpTarget: ports to scan: ${JSON.stringify(ports)}`);
+
+    const wsName = vscode.workspace.name;
+    logDebug(`discoverCdpTarget: current workspace name is ${wsName}`);
+
+    const fuzzyMatchWorkspaceName = (ws, title) => {
+        if (!ws || !title) return false;
+        const clean = (str) => {
+            return str
+                .replace(/[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD00-\uDFFF]/g, '')
+                .toLowerCase()
+                .replace(/\s+/g, ' ')
+                .trim();
+        };
+        const cleanWs = clean(ws);
+        const cleanTitle = clean(title);
+        return cleanTitle.includes(cleanWs) || cleanWs.includes(cleanTitle);
+    };
+
+    // 0. Priority: Target matching current workspace name to ensure correct window routing
+    if (wsName) {
+        logDebug(`discoverCdpTarget: checking ports for workspace name matching: ${wsName}`);
+        for (const port of ports) {
+            try {
+                const pages = await getJson(`http://localhost:${port}/json/list`);
+                const workbench = pages.find(p => p.type === 'page' && p.url && p.url.includes('workbench.html'));
+                if (workbench && fuzzyMatchWorkspaceName(wsName, workbench.title)) {
+                    logDebug(`discoverCdpTarget: matched workspace name "${wsName}" on port ${port}, workbench title="${workbench.title}", url=${workbench.webSocketDebuggerUrl}`);
+                    return { port, webSocketDebuggerUrl: workbench.webSocketDebuggerUrl };
+                }
+            } catch (e) {
+                logDebug(`discoverCdpTarget: error on port ${port} during workspace name matching: ${e.message}`);
+            }
+        }
+    }
 
     // 1. Target specific webviewId matching
     if (webviewId) {
@@ -636,7 +673,7 @@ evaluateScript(ws, expression) {
             const widgetText = (visibleWidget.textContent || '').toLowerCase();
             
             const isWindowDialog = placeholder.includes('where to open') || placeholder.includes('open the conversation') || widgetText.includes('where to open');
-            const isWorkspaceDialog = placeholder.includes('workspace') || placeholder.includes('select workspace') || widgetText.includes('select workspace') || widgetText.includes('workspace to open');
+            const isWorkspaceDialog = placeholder.includes('workspace') || placeholder.includes('select workspace') || widgetText.includes('select workspace') || widgetText.includes('workspace to open') || placeholder.includes('folder') || widgetText.includes('folder') || placeholder.includes('папк') || widgetText.includes('папк');
             
             if (!isWindowDialog && !isWorkspaceDialog) {
                 return { found: true, type: 'unknown' };
@@ -1047,6 +1084,9 @@ evaluateScript(ws, expression) {
                         })()`);
                         matched = true;
                         vscode.window.showInformationMessage(getTranslation('infoOpenedTitle', lang).replace('{title}', generic));
+                        // Wait for potential folder/workspace QuickPick dialog
+                        await new Promise(r => setTimeout(r, 400));
+                        await this.resolveQuickPickDialog(ws);
                     } else {
                         logDebug(`activateChatSession: Generic title did not match. Clearing input.`);
                         // Clear input
@@ -1109,6 +1149,9 @@ evaluateScript(ws, expression) {
                             return false;
                         })()`);
                         vscode.window.showInformationMessage(getTranslation('infoOpenedTitleFallback', lang).replace('{title}', display));
+                        // Wait for potential folder/workspace QuickPick dialog
+                        await new Promise(r => setTimeout(r, 400));
+                        await this.resolveQuickPickDialog(ws);
                     } else {
                         logDebug(`activateChatSession: Dialogue not found in index. Asking user to reload window.`);
                         const reloadBtn = getTranslation('reload', lang);
@@ -1285,8 +1328,12 @@ function getWebviewContent(lang) {
         cardCreatedTitle: getTranslation('cardCreatedTitle', lang),
         layoutModeLabel: getTranslation('layoutModeLabel', lang),
         layoutDetailed: getTranslation('layoutDetailed', lang),
-        layoutCompact: getTranslation('layoutCompact', lang)
+        layoutCompact: getTranslation('layoutCompact', lang),
+        filterHasNote: getTranslation('filterHasNote', lang)
     };
+
+    const scrollPosition = vscode.workspace.getConfiguration('antigravity-chat-manager').get('scrollPosition', 'top');
+    t.scrollPosition = scrollPosition;
 
     const languages = [
         { code: 'auto', label: getAutoLabel(lang) },
@@ -1703,7 +1750,14 @@ function getWebviewContent(lang) {
             padding: 2px 6px;
             font-size: 11px;
             outline: none;
-            width: 250px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .chat-note-row.editing {
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
         }
 
         .chat-actions {
@@ -2224,6 +2278,7 @@ function getWebviewContent(lang) {
                     <button class="filter-btn active" data-filter="all">{{filterAll}}</button>
                     <button class="filter-btn" data-filter="active">{{filterActive}}</button>
                     <button class="filter-btn" data-filter="orphaned">{{filterOrphaned}}</button>
+                    <button class="filter-btn" data-filter="has-note">{{filterHasNote}}</button>
                 </div>
                 <select class="sort-select" id="sort-select">
                     <option value="date-desc">{{sortNewest}}</option>
@@ -2306,6 +2361,7 @@ function getWebviewContent(lang) {
         let currentSort = 'date-desc';
         let chatToDelete = null;
         let currentLayout = localStorage.getItem('layoutMode') || 'detailed';
+        let initialScrollDone = false;
 
         // Dom Elements
         const loadingView = document.getElementById('loading-view');
@@ -2459,6 +2515,10 @@ function getWebviewContent(lang) {
                     conversations = message.data;
                     updateStats();
                     renderList();
+                    if (!initialScrollDone) {
+                        initialScrollDone = true;
+                        performInitialScroll();
+                    }
                     break;
                 case 'actionSuccess':
                     sendToExtension({ command: 'list' });
@@ -2545,12 +2605,28 @@ function getWebviewContent(lang) {
             return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
         }
 
+        function performInitialScroll() {
+            const scrollPos = '{{scrollPosition}}';
+            if (scrollPos === 'filters') {
+                const el = document.querySelector('.controls-bar');
+                if (el) {
+                    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            } else if (scrollPos === 'list') {
+                const el = document.getElementById('chat-list-view');
+                if (el) {
+                    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }
+        }
+
         function renderList() {
             const selectedProject = document.getElementById('project-filter').value;
             // Apply filtering
             let filtered = conversations.filter(c => {
                 if (currentFilter === 'active' && !c.isActive) return false;
                 if (currentFilter === 'orphaned' && c.isActive) return false;
+                if (currentFilter === 'has-note' && !c.note) return false;
                 
                 if (selectedProject !== 'all') {
                     if (!c.workspaces || !c.workspaces.includes(selectedProject)) return false;
@@ -2799,7 +2875,8 @@ function getWebviewContent(lang) {
                     container.style.display = 'inline-flex';
                     container.style.alignItems = 'center';
                     container.style.position = 'relative';
-                    container.style.width = '250px';
+                    container.style.width = '100%';
+                    container.style.flexGrow = '1';
 
                     const input = document.createElement('input');
                     input.type = 'text';

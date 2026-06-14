@@ -110,6 +110,21 @@
             "ar": "العربية",
             "id": "Bahasa Indonesia"
           }
+        },
+        "antigravity-chat-manager.scrollPosition": {
+          "type": "string",
+          "enum": [
+            "top",
+            "filters",
+            "list"
+          ],
+          "default": "top",
+          "description": "%config.scrollPosition.description%",
+          "enumItemLabels": {
+            "top": "%config.scrollPosition.top%",
+            "filters": "%config.scrollPosition.filters%",
+            "list": "%config.scrollPosition.list%"
+          }
         }
       }
     }

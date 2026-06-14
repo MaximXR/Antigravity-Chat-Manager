@@ -8,3 +8,7 @@ merge_logos.py
 *.lock_test
 *.vsix
 dist/**
+build.bat
+build.ps1
+extension_debug.log
+правки .txt

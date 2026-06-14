@@ -82,7 +82,9 @@ const translations = {
     "configChangedMsg": "Sidebar panel icon setting changed. Reload window is required to apply changes.",
     "configChangedBtn": "Reload Window",
     "infoOpenedTitle": "Dialogue \"{title}\" successfully opened.",
-    "infoOpenedTitleFallback": "Technical name not found in cache. Dialogue \"{title}\" opened by name.",
+    "infoOpenedTitleFallback": "Dialogue \"{title}\" successfully opened by name (technical name not found in cache).",
+    "filterHasNote": "With Notes",
+    "warnSkippedLocked": "Some locked conversations were skipped.",
     "errDiscoverCdp": "Failed to find any active workbench page in Antigravity. Make sure it was launched with debugging flag.",
     "errSidebarOpen": "Failed to open chat sidebar. Please open it manually (Ctrl+Alt+B or Ctrl+Alt+J) and try again.",
     "errHistoryBtn": "Chats history button not found.",
@@ -179,7 +181,9 @@ const translations = {
     "configChangedMsg": "Настройка иконки боковой панели изменена. Требуется перезагрузить окно для применения.",
     "configChangedBtn": "Перезагрузить окно",
     "infoOpenedTitle": "Чат успешно открыт по техническому названию \"{title}\".",
-    "infoOpenedTitleFallback": "Техническое имя не найдено в кэше. Чат \"{title}\" запущен по названию.",
+    "infoOpenedTitleFallback": "Чат \"{title}\" успешно запущен по названию (техническое имя не найдено в кэше).",
+    "filterHasNote": "С заметками",
+    "warnSkippedLocked": "Некоторые заблокированные чаты были пропущены.",
     "errDiscoverCdp": "Не удалось найти активную страницу workbench в Antigravity. Убедитесь, что запуск выполнен с флагом отладки.",
     "errSidebarOpen": "Не удалось открыть боковую панель чата. Пожалуйста, откройте её вручную (Ctrl+Alt+B или Ctrl+Alt+J) и попробуйте снова.",
     "errHistoryBtn": "Кнопка истории чатов не найдена.",
@@ -233,7 +237,9 @@ const translations = {
     "cardNote": "备注",
     "cardAddNote": "添加备注...",
     "statusBarText": "对话",
-    "statusBarTooltip": "打开 Antigravity 对话管理器"
+    "statusBarTooltip": "打开 Antigravity 对话管理器",
+    "filterHasNote": "有备注",
+    "warnSkippedLocked": "一些被锁定的对话已被跳过。"
   },
   "zh-tw": {
     "title": "Antigravity 對話管理器",
@@ -275,7 +281,9 @@ const translations = {
     "cardNote": "備忘錄",
     "cardAddNote": "新增備忘錄...",
     "statusBarText": "對話",
-    "statusBarTooltip": "開啟 Antigravity 對話管理器"
+    "statusBarTooltip": "開啟 Antigravity 對話管理器",
+    "filterHasNote": "有備忘錄",
+    "warnSkippedLocked": "一些被鎖定的對話已被跳過。"
   },
   "ja": {
     "title": "Antigravity 対話マネージャー",
@@ -317,7 +325,9 @@ const translations = {
     "cardNote": "メモ",
     "cardAddNote": "メモを追加...",
     "statusBarText": "対話",
-    "statusBarTooltip": "Antigravity 対話マネージャーを開く"
+    "statusBarTooltip": "Antigravity 対話マネージャーを開く",
+    "filterHasNote": "メモあり",
+    "warnSkippedLocked": "一部のロックされた対話はスキップされました。"
   },
   "ko": {
     "title": "Antigravity 대화 관리자",
@@ -359,7 +369,9 @@ const translations = {
     "cardNote": "노트",
     "cardAddNote": "노트 추가...",
     "statusBarText": "대화",
-    "statusBarTooltip": "Antigravity 대화 관리자 열기"
+    "statusBarTooltip": "Antigravity 대화 관리자 열기",
+    "filterHasNote": "노트 있음",
+    "warnSkippedLocked": "일부 잠긴 대화는 건너뛰었습니다."
   },
   "de": {
     "title": "Antigravity Dialog-Manager",
@@ -401,7 +413,9 @@ const translations = {
     "cardNote": "Notiz",
     "cardAddNote": "Notiz hinzufügen...",
     "statusBarText": "Dialoge",
-    "statusBarTooltip": "Antigravity Dialog-Manager öffnen"
+    "statusBarTooltip": "Antigravity Dialog-Manager öffnen",
+    "filterHasNote": "Mit Notizen",
+    "warnSkippedLocked": "Einige gesperrte Dialoge wurden übersprungen."
   },
   "fr": {
     "title": "Gestionnaire de Dialogues Antigravity",
@@ -443,7 +457,9 @@ const translations = {
     "cardNote": "Note",
     "cardAddNote": "Ajouter une note...",
     "statusBarText": "Dialogues",
-    "statusBarTooltip": "Ouvrir le gestionnaire de dialogues Antigravity"
+    "statusBarTooltip": "Ouvrir le gestionnaire de dialogues Antigravity",
+    "filterHasNote": "Avec notes",
+    "warnSkippedLocked": "Certains dialogues verrouillés ont été ignorés."
   },
   "es": {
     "title": "Gestor de Diálogos Antigravity",
@@ -485,7 +501,9 @@ const translations = {
     "cardNote": "Nota",
     "cardAddNote": "Añadir nota...",
     "statusBarText": "Diálogos",
-    "statusBarTooltip": "Abrir el gestor de diálogos Antigravity"
+    "statusBarTooltip": "Abrir el gestor de diálogos Antigravity",
+    "filterHasNote": "Con notas",
+    "warnSkippedLocked": "Se omitieron algunos diálogos bloqueados."
   },
   "pt-br": {
     "title": "Gerenciador de Diálogos Antigravity",
@@ -527,7 +545,9 @@ const translations = {
     "cardNote": "Nota",
     "cardAddNote": "Adicionar nota...",
     "statusBarText": "Diálogos",
-    "statusBarTooltip": "Abrir gerenciador de diálogos Antigravity"
+    "statusBarTooltip": "Abrir gerenciador de diálogos Antigravity",
+    "filterHasNote": "Com notas",
+    "warnSkippedLocked": "Alguns diálogos bloqueados foram ignorados."
   },
   "it": {
     "title": "Gestore dei Dialoghi Antigravity",
@@ -569,7 +589,9 @@ const translations = {
     "cardNote": "Nota",
     "cardAddNote": "Aggiungi nota...",
     "statusBarText": "Dialoghi",
-    "statusBarTooltip": "Apri il gestore dei dialoghi Antigravity"
+    "statusBarTooltip": "Apri il gestore dei dialoghi Antigravity",
+    "filterHasNote": "Con note",
+    "warnSkippedLocked": "Alcuni dialoghi bloccati sono stati saltati."
   },
   "tr": {
     "title": "Antigravity Diyalog Yöneticisi",
@@ -611,7 +633,9 @@ const translations = {
     "cardNote": "Not",
     "cardAddNote": "Not ekle...",
     "statusBarText": "Diyaloglar",
-    "statusBarTooltip": "Antigravity Diyalog Yöneticisini Aç"
+    "statusBarTooltip": "Antigravity Diyalog Yöneticisini Aç",
+    "filterHasNote": "Notlu",
+    "warnSkippedLocked": "Bazı kilitli diyaloglar atlandı."
   },
   "pl": {
     "title": "Menedżer Dialogów Antigravity",
@@ -653,7 +677,9 @@ const translations = {
     "cardNote": "Notatka",
     "cardAddNote": "Dodaj notatkę...",
     "statusBarText": "Dialogi",
-    "statusBarTooltip": "Otwórz menedżer dialogów Antigravity"
+    "statusBarTooltip": "Otwórz menedżer dialogów Antigravity",
+    "filterHasNote": "Z notatkami",
+    "warnSkippedLocked": "Niektóre zablokowane dialogi zostały pominięte."
   },
   "cs": {
     "title": "Správce Dialogů Antigravity",
@@ -695,7 +721,9 @@ const translations = {
     "cardNote": "Poznámka",
     "cardAddNote": "Přidat poznámku...",
     "statusBarText": "Dialogy",
-    "statusBarTooltip": "Otevřít správce dialogů Antigravity"
+    "statusBarTooltip": "Otevřít správce dialogů Antigravity",
+    "filterHasNote": "S poznámkami",
+    "warnSkippedLocked": "Některé uzamčené dialogy byly přeskočeny."
   },
   "vi": {
     "title": "Trình Quản Lý Hội Thoại Antigravity",
@@ -737,7 +765,9 @@ const translations = {
     "cardNote": "Ghi chú",
     "cardAddNote": "Thêm ghi chú...",
     "statusBarText": "Hội thoại",
-    "statusBarTooltip": "Mở trình quản lý hội thoại Antigravity"
+    "statusBarTooltip": "Mở trình quản lý hội thoại Antigravity",
+    "filterHasNote": "Có ghi chú",
+    "warnSkippedLocked": "Một số cuộc hội thoại bị khóa đã bị bỏ qua."
   },
   "ar": {
     "title": "مدير محادثات Antigravity",
@@ -779,7 +809,9 @@ const translations = {
     "cardNote": "ملاحظة",
     "cardAddNote": "إضافة ملاحظة...",
     "statusBarText": "المحادثات",
-    "statusBarTooltip": "فتح مدير محادثات Antigravity"
+    "statusBarTooltip": "فتح مدير محادثات Antigravity",
+    "filterHasNote": "مع ملاحظات",
+    "warnSkippedLocked": "تم تخطي بعض المحادثات المقفلة."
   },
   "id": {
     "title": "Pengelola Dialog Antigravity",
@@ -821,7 +853,9 @@ const translations = {
     "cardNote": "Catatan",
     "cardAddNote": "Tambah catatan...",
     "statusBarText": "Dialog",
-    "statusBarTooltip": "Buka pengelola dialog Antigravity"
+    "statusBarTooltip": "Buka pengelola dialog Antigravity",
+    "filterHasNote": "Dengan catatan",
+    "warnSkippedLocked": "Beberapa dialog yang terkunci dilewati."
   }
 };
 

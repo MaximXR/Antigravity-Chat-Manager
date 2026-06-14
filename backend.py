@@ -932,6 +932,19 @@ def do_delete_all_orphaned(current_title_or_uuid=None):
                 if match_title(item["title"], curr_title_lower):
                     curr_uuid = item["uuid"].lower()
                     break
+            if not curr_uuid:
+                # Fallback to check on-disk directories (e.g. for orphaned currently active conversations)
+                disk_uuids_tmp = []
+                if os.path.exists(brain_dir):
+                    for name in os.listdir(brain_dir):
+                        if os.path.isdir(os.path.join(brain_dir, name)):
+                            if re.match(r'^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$', name):
+                                disk_uuids_tmp.append(name.lower())
+                for u in disk_uuids_tmp:
+                    t = get_heuristic_title(u)
+                    if match_title(t, curr_title_lower):
+                        curr_uuid = u
+                        break
     
     brain_uuids = []
     if os.path.exists(brain_dir):

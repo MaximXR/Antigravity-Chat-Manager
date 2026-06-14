@@ -5,5 +5,9 @@
   "viewsContainers.activitybar.title": "🧹 Диалоги",
   "views.chat-manager.name": "Менеджер диалогов",
   "config.iconType.description": "Тип иконки для боковой панели (chat - облако диалога, trash - корзина)",
-  "config.language.description": "Язык интерфейса и уведомлений для Менеджера чатов Antigravity (auto: язык системы, либо выбрать вручную)"
+  "config.language.description": "Язык интерфейса и уведомлений для Менеджера чатов Antigravity (auto: язык системы, либо выбрать вручную)",
+  "config.scrollPosition.description": "Позиция прокрутки веб-панели при запуске",
+  "config.scrollPosition.top": "В самый верх страницы (по умолчанию)",
+  "config.scrollPosition.filters": "До панели фильтров",
+  "config.scrollPosition.list": "До начала списка диалогов"
 }
