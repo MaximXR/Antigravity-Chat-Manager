@@ -1625,18 +1625,25 @@ function getWebviewContent(lang) {
             display: flex;
             flex-direction: column;
             gap: 6px;
+            min-width: 0;
+            overflow: hidden;
         }
 
         .chat-title-row {
             display: flex;
             align-items: center;
             gap: 10px;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .chat-title {
             font-size: 14px;
             font-weight: 600;
             margin: 0;
+            word-break: break-all;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
 
         .badge {
@@ -2000,6 +2007,8 @@ function getWebviewContent(lang) {
             align-items: center;
             cursor: pointer;
             transition: background 0.2s, border-color 0.2s, color 0.2s;
+            word-break: break-all;
+            overflow-wrap: break-word;
         }
 
         .workspace-badge:hover {
@@ -2020,6 +2029,9 @@ function getWebviewContent(lang) {
             display: flex;
             align-items: center;
             gap: 6px;
+            flex: 1;
+            min-width: 0;
+            overflow: hidden;
         }
 
         .chat-title.btn-open-folder {
