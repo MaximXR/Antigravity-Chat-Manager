@@ -24,17 +24,14 @@
 - **Dialogue Launching Fixes**: Fixed the `Cannot find module 'ws'` runtime crash by bundling dependencies. Corrected IDE window focusing during multiple workspace sessions and automatic folder approval in QuickPick prompts.
 - **Build Automation**: Modified `build.bat` to keep older packaged VSIX files inside the `dist` directory instead of deleting them.
 - **README Updates**: Restructured layout, placing technical details on file locking, compiling instructions, and project acknowledgments below main features.
-
 ---
 
 ## 1.0.1
 ### Русский
-- Добавлена поддержка локализации на русский и другие языки.
-- Повышена стабильность работы расширения.
+- Промежуточная техническая версия.
 
 ### English
-- Added localization support for Russian and other languages.
-- Stability improvements.
+- Intermediate technical release.
 
 ---
 
