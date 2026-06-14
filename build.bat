@@ -22,7 +22,7 @@ if exist extension_debug.log del /q /f extension_debug.log
 if exist *.vsix del /q /f *.vsix
 
 echo [4/5] Packaging extension via vsce...
-call npx @vscode/vsce package
+call npx @vscode/vsce package --allow-star-activation
 
 echo [5/5] Moving and renaming the packaged VSIX to dist/...
 node -e "const fs = require('fs'); const path = require('path'); const pkg = JSON.parse(fs.readFileSync('package.json')); const gen = 'maximxr.antigravity-chat-manager-' + pkg.version + '.vsix'; const tgt = path.join('dist', 'Antigravity-chat-manager-' + pkg.version + '.vsix'); if (!fs.existsSync('dist')) { fs.mkdirSync('dist'); } if (fs.existsSync(tgt)) { fs.unlinkSync(tgt); } if (fs.existsSync(gen)) { fs.renameSync(gen, tgt); console.log('Successfully moved and renamed ' + gen + ' to ' + tgt); } else { const files = fs.readdirSync('.').filter(f => f.endsWith('.vsix') && f.includes('antigravity-chat-manager')); if (files.length > 0) { if (fs.existsSync(tgt)) { fs.unlinkSync(tgt); } fs.renameSync(files[0], tgt); console.log('Successfully moved and renamed ' + files[0] + ' to ' + tgt); } else { console.error('Error: Packaged VSIX file was not found!'); process.exit(1); } }"
