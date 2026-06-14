@@ -9,3 +9,5 @@ __pycache__/
 # User custom drafts/assets directories
 drafts/
 temp_resources/
+.agents/
+
