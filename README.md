@@ -14,6 +14,10 @@
 
 После скачивания файла установите его в Antigravity IDE (меню *Extensions* -> кнопка *... (Views and More Actions)* -> *Install from VSIX...*).
 
+> [!TIP]
+> **Собственная сборка из исходников:**
+> Вместо скачивания готового релиза вы можете скомпилировать расширение самостоятельно. Для этого просто запустите файл `build.bat` в корневом каталоге проекта — он автоматически проверит и установит необходимые зависимости, выполнит сборку и создаст актуальный `.vsix` файл в папке `dist/`.
+
 ### Какие проблемы решает расширение?
 
 1. **Потеря диалогов (выпадение из индекса)**:
@@ -94,6 +98,10 @@ You can download the compiled `.vsix` extension file from the GitHub releases pa
 👉 **[Download Latest Releases (VSIX)](https://github.com/MaximXR/Antigravity-Chat-Manager/releases)**
 
 After downloading, install it in Antigravity IDE (via *Extensions* menu -> click *... (Views and More Actions)* -> *Install from VSIX...*).
+
+> [!TIP]
+> **Building from Source:**
+> Instead of downloading a pre-built release, you can compile the extension yourself. Simply run the `build.bat` script in the project root directory — it will check and install dependencies, package the extension, and output the compiled `.vsix` file to the `dist/` folder.
 
 ### What Problems Does It Solve?
 
