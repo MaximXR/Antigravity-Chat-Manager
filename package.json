@@ -18,12 +18,9 @@
   ],
   "keywords": [
     "antigravity",
-    "chat",
-    "ai",
-    "manager",
+    "chat-manager",
+    "dialogue-manager",
     "history",
-    "gemini",
-    "dialogue",
     "cleanup"
   ],
   "activationEvents": [
