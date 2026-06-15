@@ -2,8 +2,7 @@
 
 [Русский](#русский) | [English](#english)
 
-> [!IMPORTANT]
-> **Эксклюзивно для Antigravity IDE 2.0+**: Данное расширение разработано специально для Antigravity IDE и не совместимо со стандартным VS Code.
+> ⚠️ **Эксклюзивно для Antigravity IDE 2.0+**: Данное расширение разработано специально для Antigravity IDE и не совместимо со стандартным VS Code.
 > 
 > **Exclusive for Antigravity IDE 2.0+**: This extension is designed specifically for Antigravity IDE and is not compatible with standard VS Code.
 
@@ -19,8 +18,7 @@
 
 После скачивания файла установите его в Antigravity IDE (меню *Extensions* -> кнопка *... (Views and More Actions)* -> *Install from VSIX...*).
 
-> [!TIP]
-> **Собственная сборка из исходников:**
+> 💡 **Собственная сборка из исходников:**
 > Вместо скачивания готового релиза вы можете скомпилировать расширение самостоятельно. Для этого просто запустите файл `build.bat` в корневом каталоге проекта — он автоматически проверит и установит необходимые зависимости, выполнит сборку и создаст актуальный `.vsix` файл в папке `dist/`.
 
 ### Какие проблемы решает расширение?
@@ -59,12 +57,10 @@
 - **Кроссплатформенность**: Работает на Windows, macOS и Linux.
 - **Двуязычный интерфейс**: Автоматически переключается на русский или английский язык в зависимости от системной локали IDE.
 
-> [!NOTE]
-> **Где хранятся заметки?**
+> ℹ️ **Где хранятся заметки?**
 > Заметки хранятся локально на вашем компьютере в глобальной папке `~/.gemini/antigravity-ide/annotations/<uuid>_note.txt`. Это предотвращает засорение рабочей области проекта служебными файлами и позволяет автоматически удалять файлы заметок с диска при физическом удалении диалогов.
 
-> [!IMPORTANT]
-> **Важное ограничение блокировки файлов IDE:**
+> ⚠️ **Важное ограничение блокировки файлов IDE:**
 > Если диалог открывался или редактировался в текущей сессии IDE, его файлы блокируются самой средой разработки. 
 > - Перед физическим удалением такого чата (кнопкой «Удалить») необходимо выполнить **перезапуск окна Antigravity IDE (Reload Window / Ctrl+R)**, чтобы снять блокировку с файлов на диске.
 > - Аналогично, если вы восстановили потерянный чат в индекс, рекомендуется сделать **перезапуск окна (Reload Window)** перед его открытием для правильной инициализации IDE.
@@ -104,8 +100,7 @@ You can download the compiled `.vsix` extension file from the GitHub releases pa
 
 After downloading, install it in Antigravity IDE (via *Extensions* menu -> click *... (Views and More Actions)* -> *Install from VSIX...*).
 
-> [!TIP]
-> **Building from Source:**
+> 💡 **Building from Source:**
 > Instead of downloading a pre-built release, you can compile the extension yourself. Simply run the `build.bat` script in the project root directory — it will check and install dependencies, package the extension, and output the compiled `.vsix` file to the `dist/` folder.
 
 ### What Problems Does It Solve?
@@ -144,12 +139,10 @@ After downloading, install it in Antigravity IDE (via *Extensions* menu -> click
 - **Cross-Platform**: Fully compatible with Windows, macOS, and Linux.
 - **Localization**: Automatically switches between English and Russian based on your IDE locale settings.
 
-> [!NOTE]
-> **Where Are the Notes Stored?**
+> ℹ️ **Where Are the Notes Stored?**
 > Notes are saved locally on your computer in the global folder `~/.gemini/antigravity-ide/annotations/<uuid>_note.txt`. This keeps your project workspace files completely clean and ensures that note files are automatically deleted when the dialogue is erased.
 
-> [!IMPORTANT]
-> **Important IDE File Lock Limitation:**
+> ⚠️ **Important IDE File Lock Limitation:**
 > If a dialogue was opened or edited in your current IDE session, its files are locked by the IDE application.
 > - Before permanently deleting such a chat (via the "Delete" button), you must perform a **Reload Window (Ctrl+R)** in Antigravity IDE to release the locks on the disk files.
 > - Similarly, if you have just restored an orphaned dialogue back to the history list, we recommend performing a **Reload Window** before opening it to ensure correct initialization.
