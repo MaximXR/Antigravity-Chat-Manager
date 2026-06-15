@@ -12,3 +12,6 @@ build.bat
 build.ps1
 extension_debug.log
 правки .txt
+*.env*
+.env.ovsx
+.agents/**
