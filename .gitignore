@@ -10,4 +10,5 @@ __pycache__/
 drafts/
 temp_resources/
 .agents/
+.env.ovsx
 
