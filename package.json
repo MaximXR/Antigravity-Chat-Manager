@@ -2,7 +2,7 @@
   "name": "antigravity-chat-manager",
   "displayName": "%extension.displayName%",
   "description": "%extension.description%",
-  "version": "1.0.2",
+  "version": "1.0.3-dev",
   "publisher": "MaximXR",
   "license": "MIT",
   "repository": {
@@ -15,6 +15,16 @@
   },
   "categories": [
     "Other"
+  ],
+  "keywords": [
+    "antigravity",
+    "chat",
+    "ai",
+    "manager",
+    "history",
+    "gemini",
+    "dialogue",
+    "cleanup"
   ],
   "activationEvents": [
     "*"

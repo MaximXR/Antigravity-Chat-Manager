@@ -23,6 +23,13 @@ function logDebug(message) {
  * @param {vscode.ExtensionContext} context
  */
 function activate(context) {
+    // Check if we are running in Antigravity IDE
+    const isAntigravity = vscode.env.appName === 'Antigravity IDE' || (vscode.env.appName && vscode.env.appName.includes('Antigravity'));
+    if (!isAntigravity) {
+        vscode.window.showErrorMessage('Antigravity Chat Manager is designed exclusively for Antigravity IDE and is not supported in standard VS Code.');
+        return;
+    }
+
     console.log('Antigravity Chat Manager activated.');
 
     const statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);

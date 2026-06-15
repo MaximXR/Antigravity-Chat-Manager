@@ -2,6 +2,11 @@
 
 [Русский](#русский) | [English](#english)
 
+> [!IMPORTANT]
+> **Эксклюзивно для Antigravity IDE 2.0+**: Данное расширение разработано специально для Antigravity IDE и не совместимо со стандартным VS Code.
+> 
+> **Exclusive for Antigravity IDE 2.0+**: This extension is designed specifically for Antigravity IDE and is not compatible with standard VS Code.
+
 ---
 
 ## Русский
