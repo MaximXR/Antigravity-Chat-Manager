@@ -1,5 +1,16 @@
 # История изменений / Changelog
 
+## 1.0.3
+### Русский
+- **Перезапуск IDE при отключенной отладке**: Если в IDE отключен порт отладки CDP (или он заблокирован), расширение предложит автоматически перезапустить IDE на первом свободном порту с сохранением всех открытых проектов (workspaces).
+- **Обход ограничений Windows Job Object**: На Windows запуск новой копии IDE переведен на WMI/CIM через PowerShell (`Invoke-CimMethod`). Это предотвращает автоматическое закрытие новой копии операционной системой при закрытии старого окна.
+
+### English
+- **IDE Relaunch when Debugging is Disabled**: If the CDP debugging port is disabled or blocked in the IDE, the extension will suggest automatically restarting the IDE on the first free port while preserving all currently open workspaces.
+- **Windows Job Object Bypass**: On Windows, the relaunch mechanism uses WMI/CIM via PowerShell (`Invoke-CimMethod`). This prevents the new instance of the IDE from being forcefully terminated by the OS when the old window closes.
+
+---
+
 ## 1.0.2
 ### Русский
 - **Адаптивная верстка кнопок**: Кнопки действий автоматически выстраиваются в один горизонтальный ряд на широких экранах и перегруппировываются в 3 аккуратных ряда на узких (в боковой панели), при этом кнопка редактирования заметки поднята наверх.

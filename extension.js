@@ -1246,12 +1246,93 @@ evaluateScript(ws, expression) {
             }
         });
         ws.on('error', (err) => {
-            vscode.window.showErrorMessage('Не удалось подключиться к CDP: ' + err.message);
+            logDebug(`activateChatSession: WebSocket error: ${err.message}`);
+            vscode.window.showErrorMessage(getTranslation('errCdpConnect', lang) + err.message);
+            promptRelaunch(lang);
         });
     } catch (err) {
-        vscode.window.showErrorMessage('Ошибка: ' + err.message);
+        logDebug(`activateChatSession: error before WebSocket: ${err.message}`);
+        const cdpErrorText = getTranslation('errDiscoverCdp', lang);
+        if (err.message === cdpErrorText || err.message.includes('CDP') || err.message.includes('debugging') || err.message.includes('отладк') || err.message.includes('workbench')) {
+            promptRelaunch(lang);
+        } else {
+            vscode.window.showErrorMessage(getTranslation('errGeneral', lang) + err.message);
+        }
     }
 }
+}
+
+async function promptRelaunch(lang) {
+    const net = require('net');
+    const isPortFree = (port) => {
+        return new Promise((resolve) => {
+            const server = net.createServer();
+            server.once('error', () => resolve(false));
+            server.once('listening', () => {
+                server.close(() => resolve(true));
+            });
+            server.listen(port, '127.0.0.1');
+        });
+    };
+
+    const findFreePort = async (preferredPorts = [9222, 9223, 9333, 9444, 9555, 9666]) => {
+        for (const port of preferredPorts) {
+            if (await isPortFree(port)) {
+                return port;
+            }
+        }
+        return new Promise((resolve) => {
+            const server = net.createServer();
+            server.listen(0, '127.0.0.1', () => {
+                const port = server.address().port;
+                server.close(() => resolve(port));
+            });
+        });
+    };
+
+    try {
+        const freePort = await findFreePort();
+        const relaunchOffer = getTranslation('relaunchOffer', lang).replace('{port}', freePort);
+        const relaunchBtn = getTranslation('relaunchBtn', lang);
+        vscode.window.showWarningMessage(relaunchOffer, relaunchBtn).then(selection => {
+            if (selection === relaunchBtn) {
+                const execPath = process.execPath;
+                const args = [`--remote-debugging-port=${freePort}`];
+                if (vscode.workspace.workspaceFolders) {
+                    for (const folder of vscode.workspace.workspaceFolders) {
+                        args.push(folder.uri.fsPath);
+                    }
+                }
+                
+                try {
+                    if (process.platform === 'win32') {
+                        // On Windows, call WMI Win32_Process.Create via PowerShell synchronously.
+                        // This bypasses the IDE's Job Object restrictions completely as the process is spawned under WmiPrvSE.
+                        const escapedPath = execPath.replace(/'/g, "''");
+                        const escapedArgs = args.map(a => a.replace(/'/g, "''")).join(' ');
+                        const psCommand = `Invoke-CimMethod -ClassName Win32_Process -MethodName Create -Arguments @{ CommandLine = ([char]34 + '${escapedPath}' + [char]34 + ' ${escapedArgs}') }`;
+                        logDebug(`Relaunching IDE on Windows via WMI: ${psCommand}`);
+                        cp.spawnSync('powershell.exe', ['-NoProfile', '-NonInteractive', '-Command', psCommand], { stdio: 'ignore' });
+                    } else {
+                        logDebug(`Relaunching IDE on Non-Windows with command: "${execPath}" ${args.join(' ')}`);
+                        const child = cp.spawn(execPath, args, {
+                            detached: true,
+                            stdio: 'ignore'
+                        });
+                        child.unref();
+                    }
+                    
+                    // Close the window immediately now that the process is guaranteed to be created
+                    vscode.commands.executeCommand('workbench.action.closeWindow');
+                } catch (spawnErr) {
+                    logDebug(`Relaunching IDE spawn failed: ${spawnErr.message}`);
+                    vscode.window.showErrorMessage(getTranslation('errGeneral', lang) + spawnErr.message);
+                }
+            }
+        });
+    } catch (portErr) {
+        logDebug(`Error finding free port: ${portErr.message}`);
+    }
 }
 
 function updateStatusBarIcon(statusBarItem) {

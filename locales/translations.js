@@ -96,7 +96,9 @@ const translations = {
     "warnProjectFolderNotFound": "Project folder is missing on disk or not specified.",
     "layoutModeLabel": "View",
     "layoutDetailed": "Detailed",
-    "layoutCompact": "Compact"
+    "layoutCompact": "Compact",
+    "relaunchOffer": "CDP debugging is disabled or blocked. Would you like to restart Antigravity IDE with debugging enabled on free port {port}?",
+    "relaunchBtn": "Relaunch IDE"
   },
   "ru": {
     "title": "Менеджер диалогов Antigravity",
@@ -195,7 +197,9 @@ const translations = {
     "warnProjectFolderNotFound": "Папка проекта на диске отсутствует или не задана.",
     "layoutModeLabel": "Вид",
     "layoutDetailed": "Подробный",
-    "layoutCompact": "Компактный"
+    "layoutCompact": "Компактный",
+    "relaunchOffer": "Отладка CDP отключена или порт заблокирован. Хотите перезапустить Antigravity IDE с включенной отладкой на свободном порту {port}?",
+    "relaunchBtn": "Перезапустить IDE"
   },
   "zh-cn": {
     "title": "Antigravity 对话管理器",
