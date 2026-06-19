@@ -2,7 +2,7 @@
   "name": "antigravity-chat-manager",
   "displayName": "%extension.displayName%",
   "description": "%extension.description%",
-  "version": "1.0.3",
+  "version": "1.0.4-dev",
   "publisher": "MaximXR",
   "license": "MIT",
   "repository": {
