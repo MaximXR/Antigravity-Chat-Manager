@@ -1,5 +1,16 @@
 # История изменений / Changelog
 
+## 1.0.4
+### Русский
+- **Исправление работы контекстного меню для заметок**: Решена проблема, при которой правый клик по текстовому полю ввода заметки приводил к потере фокуса (`blur`) и мгновенному закрытию поля. Теперь выделение текста и фокус автоматически сохраняются и восстанавливаются во время работы с контекстным меню, что делает возможными операции копирования, вырезания и вставки.
+- **Интеграция рекомендуемых расширений-компаньонов**: В описание `README.md` добавлен раздел со ссылками на сопутствующее расширение *Antigravity Plugin Manager*, а также внедрен централизованный реестр проектов в навык `/publish_open_vsx` для автоматического обновления документации.
+
+### English
+- **Fixed Note Input Context Menu**: Resolved an issue where right-clicking the note text input caused it to blur and close prematurely, preventing users from copying, cutting, or pasting text. Text selection and input focus are now automatically preserved and restored during context menu interactions.
+- **Recommended Companion Extensions Integration**: Added a section to `README.md` highlighting the companion *Antigravity Plugin Manager* extension, and integrated a centralized project registry in the `/publish_open_vsx` build tool to automate documentation updates.
+
+---
+
 ## 1.0.3
 ### Русский
 - **Перезапуск IDE при отключенной отладке**: Если в IDE отключен порт отладки CDP (или он заблокирован), расширение предложит автоматически перезапустить IDE на первом свободном порту с сохранением всех открытых проектов (workspaces).
