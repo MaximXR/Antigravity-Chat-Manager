@@ -73,6 +73,9 @@
 #### Компактный вид (Compact View)
 ![Компактный вид](resources/screenshot_compact_ru.png)
 
+### Рекомендуемые расширения-компаньоны
+- **[Antigravity Plugin Manager](https://github.com/MaximXR/Antigravity-Plugin-Manager)** — удобный визуальный контроллер плагинов, правил и навыков для тонкой настройки контекста ИИ-агентов.
+
 ### Системные требования и Совместимость
 - Разработано специально для **Antigravity IDE**.
 - Совместимо со всеми операционными системами: **Windows, macOS, Linux**.
@@ -154,6 +157,9 @@ After downloading, install it in Antigravity IDE (via *Extensions* menu -> click
 
 #### Compact View
 ![Compact View](resources/screenshot_compact_en.png)
+
+### Recommended Companion Extensions
+- **[Antigravity Plugin Manager](https://github.com/MaximXR/Antigravity-Plugin-Manager)** — a visual controller for global plugins, rules, and skills to fine-tune active AI context parameters.
 
 ### Prerequisites & Compatibility
 - Designed specifically for **Antigravity IDE**.

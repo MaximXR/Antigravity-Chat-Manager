@@ -3126,9 +3126,18 @@ function getWebviewContent(lang) {
                     input.focus();
                     
                     let finished = false;
+                    let isContextMenuOpen = false;
+                    let selectionStart = 0;
+                    let selectionEnd = 0;
+                    let selectionDirection = 'forward';
+
                     const finishEdit = (save) => {
                         if (finished) return;
                         finished = true;
+                        
+                        document.removeEventListener('mousedown', handleGlobalMousedown);
+                        window.removeEventListener('focus', handleWindowFocus);
+
                         if (save) {
                             const newVal = input.value.trim();
                             if (newVal !== currentVal) {
@@ -3145,8 +3154,43 @@ function getWebviewContent(lang) {
                             renderList();
                         }
                     };
+
+                    const handleGlobalMousedown = (e) => {
+                        if (isContextMenuOpen) {
+                            if (!container.contains(e.target)) {
+                                isContextMenuOpen = false;
+                                finishEdit(true);
+                            } else {
+                                isContextMenuOpen = false;
+                            }
+                        }
+                    };
+
+                    const handleWindowFocus = () => {
+                        setTimeout(() => {
+                            if (isContextMenuOpen) {
+                                if (document.activeElement !== input) {
+                                    isContextMenuOpen = false;
+                                    finishEdit(true);
+                                } else {
+                                    isContextMenuOpen = false;
+                                }
+                            }
+                        }, 100);
+                    };
+
+                    document.addEventListener('mousedown', handleGlobalMousedown);
+                    window.addEventListener('focus', handleWindowFocus);
+
+                    input.addEventListener('contextmenu', () => {
+                        isContextMenuOpen = true;
+                        selectionStart = input.selectionStart;
+                        selectionEnd = input.selectionEnd;
+                        selectionDirection = input.selectionDirection || 'forward';
+                    });
                     
                     input.addEventListener('keydown', (evt) => {
+                        isContextMenuOpen = false;
                         if (evt.key === 'Enter') {
                             finishEdit(true);
                         } else if (evt.key === 'Escape') {
@@ -3155,8 +3199,22 @@ function getWebviewContent(lang) {
                     });
                     
                     input.addEventListener('blur', () => {
+                        if (isContextMenuOpen) {
+                            input.focus();
+                            input.setSelectionRange(selectionStart, selectionEnd, selectionDirection);
+                            setTimeout(() => {
+                                if (isContextMenuOpen) {
+                                    input.focus();
+                                    input.setSelectionRange(selectionStart, selectionEnd, selectionDirection);
+                                }
+                            }, 0);
+                            return;
+                        }
                         // Wait a tiny bit in case enter key is pressed (which handles blur too)
-                        setTimeout(() => finishEdit(true), 150);
+                        setTimeout(() => {
+                            if (isContextMenuOpen) return;
+                            finishEdit(true);
+                        }, 150);
                     });
                 });
             });
